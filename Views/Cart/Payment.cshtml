@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Payment";
+}
+
+<section class="payment-page">
+    <div class="payment-card">
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert-error">@TempData["Error"]</div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert-success">@TempData["Success"]</div>
+        }
+
+        <h1>Complete Payment</h1>
+
+        <div class="payment-summary">
+            <p><strong>Payment Method:</strong> @ViewBag.PaymentMethod</p>
+            <p><strong>Total Amount:</strong> PKR @ViewBag.Amount</p>
+        </div>
+
+        @if (ViewBag.PaymentMethod == "JazzCash")
+        {
+            <div class="payment-info">
+                <h3>JazzCash Payment</h3>
+                <p>You will be redirected to JazzCash secure payment gateway.</p>
+            </div>
+
+            <form action="/Cart/JazzCashPayment" method="post" class="payment-form">
+                <input type="hidden" name="amount" value="@ViewBag.Amount" />
+
+                <button type="submit" class="pay-btn">
+                    Pay Now with JazzCash
+                </button>
+            </form>
+        }
+        else if (ViewBag.PaymentMethod == "EasyPaisa")
+        {
+            <div class="payment-info">
+                <h3>EasyPaisa Payment</h3>
+                <p>You will be redirected to EasyPaisa secure payment gateway.</p>
+            </div>
+
+            <form action="/Cart/EasyPaisaPayment" method="post" class="payment-form">
+                <input type="hidden" name="amount" value="@ViewBag.Amount" />
+
+                <button type="submit" class="pay-btn">
+                    Pay Now with EasyPaisa
+                </button>
+            </form>
+        }
+        else if (ViewBag.PaymentMethod == "Bank Transfer")
+        {
+            <div class="payment-info">
+                <h3>Bank Transfer Details</h3>
+                <p><strong>Bank:</strong> HBL</p>
+                <p><strong>Account No:</strong> 1234567890</p>
+                <p><strong>Account Title:</strong> Restaurant Demo</p>
+            </div>
+
+            <form action="/Cart/ConfirmPayment" method="post" class="payment-form">
+                <input type="hidden" name="paymentMethod" value="@ViewBag.PaymentMethod" />
+                <input type="hidden" name="amount" value="@ViewBag.Amount" />
+
+                <label>Your Name</label>
+                <input type="text" name="senderName" required placeholder="Enter your name" />
+
+                <label>Your Account / Mobile Number</label>
+                <input type="text" name="accountNumber" required placeholder="Enter account or mobile number" />
+
+                <label>Transaction ID</label>
+                <input type="text" name="transactionId" required placeholder="Enter transaction ID" />
+
+                <button type="submit" class="pay-btn">
+                    Confirm Bank Payment
+                </button>
+            </form>
+        }
+        else
+        {
+            <div class="alert-error">
+                Invalid payment method selected.
+            </div>
+        }
+
+        <a href="/Cart" class="back-cart">← Back to Cart</a>
+
+    </div>
+</section>

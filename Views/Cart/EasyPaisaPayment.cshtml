@@ -1,0 +1,33 @@
+﻿@model SortedDictionary<string, string>
+
+@{
+    ViewData["Title"] = "EasyPaisa Payment";
+    string easyPaisaUrl = Model.ContainsKey("checkoutUrl")
+        ? Model["checkoutUrl"]
+        : "https://easypaystg.easypaisa.com.pk/easypay/Index.jsf";
+}
+
+<section class="payment-page">
+    <div class="payment-card">
+        <h1>Redirecting to EasyPaisa...</h1>
+        <p>Please wait. You are being redirected to EasyPaisa secure payment gateway.</p>
+
+        <form id="easyPaisaForm" method="post" action="@easyPaisaUrl">
+            @foreach (var item in Model)
+            {
+                if (item.Key != "checkoutUrl")
+                {
+                    <input type="hidden" name="@item.Key" value="@item.Value" />
+                }
+            }
+
+            <button type="submit" class="pay-btn">
+                Pay with EasyPaisa
+            </button>
+        </form>
+    </div>
+</section>
+
+<script>
+    document.getElementById("easyPaisaForm").submit();
+</script>

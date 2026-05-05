@@ -1,0 +1,271 @@
+@model List<MenuItem>
+@{
+    ViewData["Title"] = "Menu";
+    var categories = ViewBag.Categories as List<string> ?? new();
+}
+
+<section class="page-hero text-center">
+    <div class="container">
+        <h1 class="fw-bold">Our Menu</h1>
+        <p class="text-white-75">Fresh, premium and beautifully presented dishes.</p>
+    </div>
+</section>
+
+<section class="menu-section">
+    <div class="container">
+
+        <div class="menu-filter-card">
+            <form class="row g-3 align-items-center" method="get">
+                <div class="col-lg-5 col-md-6">
+                    <input name="search"
+                           value="@ViewBag.Search"
+                           class="form-control menu-input"
+                           placeholder="Search food, burger, pizza...">
+                </div>
+
+                <div class="col-lg-5 col-md-6">
+                    <select name="category" class="form-select menu-input">
+                        <option value="">All Categories</option>
+                        @foreach (var c in categories)
+                        {
+                            <option selected="@(ViewBag.SelectedCategory == c)" value="@c">@c</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-lg-2 col-md-12">
+                    <button class="menu-filter-btn w-100" type="submit">
+                        Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="menu-top">
+            <div>
+                <span class="section-label">Restaurant Menu</span>
+                <h2>Popular Dishes</h2>
+                <p>Freshly cooked meals ready to order.</p>
+            </div>
+
+            <span class="items-count">
+                @(Model?.Count ?? 0) Items Available
+            </span>
+        </div>
+
+        <div class="menu-categories">
+            <a href="/Menu" class="@(string.IsNullOrEmpty(ViewBag.SelectedCategory) ? "active" : "")">All</a>
+
+            @foreach (var c in categories)
+            {
+                <a href="/Menu?category=@c"
+                   class="@(ViewBag.SelectedCategory == c ? "active" : "")">
+                    @c
+                </a>
+            }
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-menu">
+                <h3>No Menu Items Found</h3>
+                <p>Try another search or category.</p>
+                <a href="/Menu">View All Menu</a>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var item in Model)
+                {
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                        <div class="professional-food-card dish-click"
+                             data-id="@item.Id"
+                             data-name="@item.Name"
+                             data-image="@item.ImageUrl"
+                             data-category="@item.Category"
+                             data-price="@item.Price"
+                             data-price-text="PKR @item.Price"
+                             data-desc="@item.Description">
+
+                            <div class="food-image-box">
+                                <img src="@item.ImageUrl" alt="@item.Name">
+                                <span class="category-badge">@item.Category</span>
+                                <span class="popular-badge">Popular</span>
+                            </div>
+
+                            <div class="food-body">
+
+                                <div class="food-title-row">
+                                    <h5>@item.Name</h5>
+                                    <span>PKR @item.Price</span>
+                                </div>
+
+                                <div class="food-rating">
+                                    ★★★★★
+                                    <small>4.8 Rating</small>
+                                </div>
+
+                                <p class="food-desc">
+                                    @item.Description
+                                </p>
+
+                                <div class="food-meta">
+                                    <span>⏱ 20-30 min</span>
+                                    <span>🔥 Fresh</span>
+                                    <span>🍽 Premium</span>
+                                </div>
+
+                                <form action="/Cart/AddToCart" method="post" class="cart-form">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="hidden" name="name" value="@item.Name" />
+                                    <input type="hidden" name="imageUrl" value="@item.ImageUrl" />
+                                    <input type="hidden" name="price" value="@item.Price" />
+
+                                    <div class="cart-control-row">
+                                        <div class="quantity-box">
+                                            <button type="button" onclick="decreaseQty(this)">−</button>
+
+                                            <input type="number"
+                                                   name="quantity"
+                                                   value="1"
+                                                   min="1"
+                                                   readonly />
+
+                                            <button type="button" onclick="increaseQty(this)">+</button>
+                                        </div>
+
+                                        <button type="submit" class="add-cart-btn">
+                                            <span>🛒</span>
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</section>
+<div id="dishModal" class="dish-modal">
+    <div class="dish-modal-card">
+
+        <button type="button" class="dish-close">&times;</button>
+
+        <div class="dish-modal-img">
+            <img id="modalImg" src="" alt="">
+            <span id="modalCategory" class="modal-category"></span>
+            <span class="modal-chef-badge">Chef Special</span>
+        </div>
+
+        <div class="dish-modal-content">
+            <span class="modal-label">Premium Dish</span>
+
+            <h2 id="modalName"></h2>
+
+            <div class="modal-rating">
+                ★★★★★ <small>4.8 Rating • Freshly Prepared</small>
+            </div>
+
+            <p id="modalDesc"></p>
+
+            <div class="modal-meta">
+                <span>⏱ 20-30 min</span>
+                <span>🔥 Fresh</span>
+                <span>🍽 Premium</span>
+            </div>
+
+            <div class="modal-price-box">
+                <small>Total Price</small>
+                <h3 id="modalPrice"></h3>
+            </div>
+
+            <form action="/Cart/AddToCart" method="post" class="modal-cart-form">
+                <input type="hidden" id="modalItemId" name="id" />
+                <input type="hidden" id="modalItemName" name="name" />
+                <input type="hidden" id="modalItemImage" name="imageUrl" />
+                <input type="hidden" id="modalItemPrice" name="price" />
+
+                <div class="modal-cart-row">
+                    <div class="quantity-box">
+                        <button type="button" onclick="decreaseQty(this)">−</button>
+
+                        <input type="number"
+                               name="quantity"
+                               value="1"
+                               min="1"
+                               readonly />
+
+                        <button type="button" onclick="increaseQty(this)">+</button>
+                    </div>
+
+                    <button type="submit" class="modal-btn">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script>
+    function increaseQty(btn) {
+        const input = btn.parentElement.querySelector("input");
+        input.value = parseInt(input.value || "1") + 1;
+    }
+
+    function decreaseQty(btn) {
+        const input = btn.parentElement.querySelector("input");
+        const value = parseInt(input.value || "1");
+
+        if (value > 1) {
+            input.value = value - 1;
+        }
+    }
+
+    const modal = document.getElementById("dishModal");
+
+    document.querySelectorAll(".dish-click").forEach(card => {
+        card.addEventListener("click", function (e) {
+
+            // Add to cart form / quantity buttons par click ho to modal open na ho
+            if (e.target.closest("form") || e.target.closest("button")) {
+                return;
+            }
+
+            document.getElementById("modalImg").src = this.dataset.image;
+            document.getElementById("modalName").innerText = this.dataset.name;
+            document.getElementById("modalCategory").innerText = this.dataset.category;
+            document.getElementById("modalDesc").innerText = this.dataset.desc;
+            document.getElementById("modalPrice").innerText = this.dataset.priceText;
+
+            // Form values for Add to Cart
+            document.getElementById("modalItemId").value = this.dataset.id;
+            document.getElementById("modalItemName").value = this.dataset.name;
+            document.getElementById("modalItemImage").value = this.dataset.image;
+            document.getElementById("modalItemPrice").value = this.dataset.price;
+
+            const modalQty = modal.querySelector('input[name="quantity"]');
+            modalQty.value = 1;
+
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        });
+    });
+
+    document.querySelector(".dish-close").addEventListener("click", function () {
+        modal.classList.remove("active");
+        document.body.style.overflow = "auto";
+    });
+
+    modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+            modal.classList.remove("active");
+            document.body.style.overflow = "auto";
+        }
+    });
+</script>

@@ -1,0 +1,200 @@
+@model List<RestaurantEvent>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<section class="page-hero events-hero-modern">
+    <div class="container">
+        <span class="events-badge">Premium Events</span>
+        <h1>Events & Catering</h1>
+        <p>Birthdays, corporate dinners and private celebrations.</p>
+    </div>
+</section>
+
+<section class="section-padding events-modern-section">
+    <div class="container">
+        <div class="section-heading text-center mb-5">
+            <h2>Plan Your Perfect Event</h2>
+            <p>Choose from our premium event packages.</p>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var ev in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="event-card event-card-modern">
+                        <div class="event-img-box">
+                            <img src="@ev.ImageUrl">
+                            <span class="event-date-badge">
+                                @ev.EventDate.ToString("dd MMM yyyy")
+                            </span>
+                        </div>
+
+                        <div class="event-content">
+                            <h3>@ev.Title</h3>
+                            <p>@ev.Description</p>
+
+                            <div class="event-footer">
+                                <strong>Starting from PKR @ev.StartingPrice</strong>
+
+                                <a asp-controller="Reservation"
+                                   asp-action="Create"
+                                   asp-route-eventId="@ev.Id"
+                                   asp-route-eventTitle="@ev.Title"
+                                   class="btn book-btn">
+                                    Book Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+   
+
+    .events-badge {
+        background: #ffc107;
+        color: #111;
+        padding: 8px 22px;
+        border-radius: 50px;
+        font-weight: 800;
+        display: inline-block;
+        margin-bottom: 18px;
+    }
+
+    .events-modern-section {
+        background: #f8f9fa;
+    }
+
+    .section-heading h2 {
+        font-weight: 900;
+        color: #222;
+    }
+
+    .section-heading p {
+        color: #777;
+    }
+
+    .event-card-modern {
+        background: #fff;
+        border-radius: 26px;
+        overflow: hidden;
+        height: 100%;
+        box-shadow: 0 18px 45px rgba(0,0,0,.09);
+        transition: .3s ease;
+        animation: fadeUp .6s ease both;
+    }
+
+        .event-card-modern:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(0,0,0,.15);
+        }
+
+    .event-img-box {
+        position: relative;
+        height: 240px;
+        overflow: hidden;
+        background: #eee;
+    }
+
+        .event-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: .45s ease;
+        }
+
+    .event-card-modern:hover .event-img-box img {
+        transform: scale(1.08);
+    }
+
+    .event-date-badge {
+        position: absolute;
+        left: 18px;
+        bottom: 18px;
+        background: #ffc107;
+        color: #111;
+        padding: 7px 16px;
+        border-radius: 50px;
+        font-size: .85rem;
+        font-weight: 800;
+    }
+
+    .event-content {
+        padding: 24px;
+    }
+
+        .event-content h3 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .event-content p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+    .event-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+    }
+
+        .event-footer strong {
+            color: #111;
+            font-size: .95rem;
+        }
+
+    .book-btn {
+        background: #ffc107;
+        color: #111;
+        border-radius: 50px;
+        padding: 9px 20px;
+        font-weight: 800;
+        white-space: nowrap;
+        border: none;
+    }
+
+        .book-btn:hover {
+            background: #e0a800;
+            color: #111;
+        }
+
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .event-img-box {
+            height: 210px;
+        }
+
+        .event-footer {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .book-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>

@@ -1,0 +1,125 @@
+@model ContactMessage
+
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<section class="page-hero contact-hero">
+    <div class="container">
+        <span class="section-small-title text-warning">Get In Touch</span>
+        <h1>Contact Us</h1>
+        <p>We would love to hear from you.</p>
+    </div>
+</section>
+
+<section class="section-padding contact-section">
+    <div class="container">
+        <div class="row g-5 align-items-stretch">
+
+            <div class="col-lg-5">
+                <div class="contact-info-card h-100">
+                    <span class="section-small-title">Visit Us</span>
+                    <h2>Visit Our Restaurant</h2>
+
+                    <p class="text-muted">
+                        Have questions, want to book an event, or need support?
+                        Contact our team anytime.
+                    </p>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h6>Address</h6>
+                            <p>Main Boulevard, Karachi</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <h6>Phone</h6>
+                            <p>+92 300 1234567</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div>
+                            <h6>Email</h6>
+                            <p>hello@saffrontable.com</p>
+                        </div>
+                    </div>
+
+                    <div class="real-map-box mt-4">
+                        <iframe src="https://www.google.com/maps?q=Main%20Boulevard%20Karachi%20Pakistan&output=embed"
+                                loading="lazy"
+                                allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="contact-form-card h-100">
+                    <span class="section-small-title">Send Message</span>
+                    <h2>Write Us a Message</h2>
+
+                    <p class="text-muted mb-4">
+                        Fill the form below and our team will contact you soon.
+                    </p>
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success rounded-4">
+                            @TempData["Success"]
+                        </div>
+                    }
+
+                    <form asp-action="Contact" method="post" class="row g-4">
+                        <div class="col-md-6">
+                            <input asp-for="Name"
+                                   class="form-control form-control-lg"
+                                   placeholder="Your Name" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input asp-for="Email"
+                                   class="form-control form-control-lg"
+                                   placeholder="Email Address" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <input asp-for="Subject"
+                                   class="form-control form-control-lg"
+                                   placeholder="Subject" />
+                            <span asp-validation-for="Subject" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <textarea asp-for="Message"
+                                      class="form-control"
+                                      rows="6"
+                                      placeholder="Write your message..."></textarea>
+                            <span asp-validation-for="Message" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit"
+                                    class="btn btn-warning btn-lg rounded-pill px-5 fw-bold">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,92 @@
+@model Reservation
+
+@{
+    ViewData["Title"] = "Book Table";
+}
+
+<section class="reservation-hero">
+    <div class="container text-center">
+        <span class="hero-badge">Reservation</span>
+        <h1>Book a Table</h1>
+        <p>Reserve your premium dining experience with us.</p>
+    </div>
+</section>
+
+<section class="reservation-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-9 col-md-11">
+                <div class="reservation-card">
+
+                    <div class="form-header text-center mb-4">
+                        <h2>Table Reservation</h2>
+                        <p>Please fill the form below to book your table.</p>
+                    </div>
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success rounded-4 shadow-sm">
+                            @TempData["Success"]
+                        </div>
+                    }
+
+                    <form asp-action="Create" method="post" class="row g-4">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="col-md-6">
+                            <label asp-for="FullName" class="form-label"></label>
+                            <input asp-for="FullName" class="form-control custom-input" placeholder="Enter full name" />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control custom-input" placeholder="Enter email address" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control custom-input" placeholder="Enter phone number" />
+                            <span asp-validation-for="Phone" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Guests" class="form-label"></label>
+                            <input asp-for="Guests" class="form-control custom-input" placeholder="Number of guests" />
+                            <span asp-validation-for="Guests" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="ReservationDate" class="form-label"></label>
+                            <input asp-for="ReservationDate" type="date" class="form-control custom-input" />
+                            <span asp-validation-for="ReservationDate" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="ReservationTime" class="form-label"></label>
+                            <input asp-for="ReservationTime" type="time" class="form-control custom-input" />
+                            <span asp-validation-for="ReservationTime" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="SpecialRequest" class="form-label"></label>
+                            <textarea asp-for="SpecialRequest" class="form-control custom-input" rows="4" placeholder="Any special request?"></textarea>
+                        </div>
+
+                        <div class="col-12 text-center mt-3">
+                            <button type="submit" class="btn reservation-btn">
+                                Submit Reservation
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

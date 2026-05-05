@@ -1,0 +1,139 @@
+﻿@model List<RestaurantMvcUltimatePro.Models.CartItem>
+
+@{
+    decimal grandTotal = Model != null && Model.Any() ? Model.Sum(x => x.Total) : 0;
+}
+
+<section class="cart-page">
+    <div class="container">
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="modern-alert">
+                @TempData["Success"]
+            </div>
+        }
+
+        <div class="cart-header">
+            <div>
+                <span class="section-label">Your Cart</span>
+                <h1>Review & Checkout</h1>
+                <p>Check your order and select your payment method.</p>
+            </div>
+
+            <a href="/Menu" class="continue-top-btn">← Continue Shopping</a>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-cart-box">
+                <h2>🛒 Your Cart is Empty</h2>
+                <p>Please add delicious items from the menu.</p>
+                <a href="/Menu">Back to Menu</a>
+            </div>
+        }
+        else
+        {
+            <div class="cart-layout">
+
+                <div class="cart-items-card">
+                    @foreach (var item in Model)
+                    {
+                        <div class="cart-item">
+                            <img src="@item.ImageUrl" alt="@item.Name" />
+
+                            <div class="cart-item-info">
+                                <h3>@item.Name</h3>
+                                <p>PKR @item.Price</p>
+
+                                <form action="/Cart/UpdateQuantity" method="post" class="qty-form">
+                                    <input type="hidden" name="id" value="@item.MenuItemId" />
+                                    <input type="number" name="quantity" value="@item.Quantity" min="1" />
+                                    <button type="submit">Update</button>
+                                </form>
+                            </div>
+
+                            <div class="cart-item-total">
+                                <strong>PKR @item.Total</strong>
+
+                                <form action="/Cart/Remove" method="post">
+                                    <input type="hidden" name="id" value="@item.MenuItemId" />
+                                    <button type="submit" class="remove-btn">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="checkout-card">
+                    <h2>Order Summary</h2>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <strong>PKR @grandTotal</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Delivery</span>
+                        <strong>Free</strong>
+                    </div>
+
+                    <hr />
+
+                    <div class="summary-total">
+                        <span>Grand Total</span>
+                        <strong>PKR @grandTotal</strong>
+                    </div>
+
+                    <h3>Select Payment Method</h3>
+
+                    <form action="/Cart/Checkout" method="post">
+                        <input type="hidden" name="grandTotal" value="@grandTotal" />
+
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="Cash On Delivery" checked />
+                            <span>
+                                <b>💵 Cash On Delivery</b>
+                                <small>Pay when your order arrives</small>
+                            </span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="JazzCash" />
+                            <span>
+                                <b>📱 JazzCash</b>
+                                <small>Pay with JazzCash wallet</small>
+                            </span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="EasyPaisa" />
+                            <span>
+                                <b>📲 EasyPaisa</b>
+                                <small>Pay with EasyPaisa account</small>
+                            </span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="Bank Transfer" />
+                            <span>
+                                <b>🏦 Bank Transfer</b>
+                                <small>Send payment to bank account</small>
+                            </span>
+                        </label>
+
+                        <button type="submit" class="checkout-btn">
+                            Proceed to Payment
+                        </button>
+                    </form>
+
+                    <form action="/Cart/Clear" method="post">
+                        <button type="submit" class="clear-btn">Clear Cart</button>
+                    </form>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</section>
