@@ -1,0 +1,89 @@
+﻿@using RestaurantMvcUltimatePro.Models
+@model Reservation
+
+@{
+    ViewData["Title"] = "Cancel Reservation";
+}
+
+<section class="cancel-page">
+
+    <div class="cancel-container">
+
+        <div class="cancel-card">
+
+            <div class="cancel-icon">
+                ⚠️
+            </div>
+
+            <span class="cancel-tag">
+                Reservation Cancellation
+            </span>
+
+            <h1>
+                Cancel Reservation?
+            </h1>
+
+            <p>
+                Are you sure you want to cancel your reservation for
+                <strong>@Model.FullName</strong>?
+            </p>
+
+            <div class="reservation-info">
+
+                <div class="info-box">
+                    <span>Date</span>
+                    <strong>
+                        @Model.ReservationDate.ToString("dd MMM yyyy")
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Time</span>
+                    <strong>
+                        @Model.ReservationTime
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Guests</span>
+                    <strong>
+                        @Model.Guests Persons
+                    </strong>
+                </div>
+
+            </div>
+
+            <form asp-action="Delete"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="cancel-actions">
+
+                    <a asp-controller="Reservation"
+                       asp-action="MyReservations"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="confirm-btn">
+
+                        Yes, Cancel Reservation
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>

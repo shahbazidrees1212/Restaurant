@@ -1,0 +1,148 @@
+﻿@model RestaurantMvcUltimatePro.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<section class="order-details-page">
+
+    <div class="order-container">
+
+        <div class="details-header">
+
+            <div>
+                <span class="small-tag">Order Information</span>
+
+                <h1>Order Details</h1>
+
+                <p>
+                    Track and view your complete order summary.
+                </p>
+            </div>
+
+            <a asp-controller="Order"
+               asp-action="History"
+               class="back-btn">
+
+                ← Back Orders
+
+            </a>
+
+        </div>
+
+        <div class="details-wrapper">
+
+            <div class="details-card">
+
+                <div class="details-top">
+
+                    <div class="order-icon">
+                        🛒
+                    </div>
+
+                    <div>
+                        <h2>
+                            Order #@Model.Id
+                        </h2>
+
+                        <span class="status-badge">
+                            @Model.Status
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+                        <span>Customer Name</span>
+                        <h3>@Model.CustomerName</h3>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Email Address</span>
+                        <h3>@Model.CustomerEmail</h3>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Phone Number</span>
+                        <h3>@Model.Phone</h3>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Address</span>
+                        <h3>@Model.Address</h3>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Total Amount</span>
+                        <h3>PKR @Model.TotalAmount</h3>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Order Date</span>
+                        <h3>@Model.OrderDate.ToString("dd MMM yyyy")</h3>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Order Status</span>
+                        <h3>@Model.Status</h3>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Total Items</span>
+                        <h3>@Model.OrderItems.Count</h3>
+                    </div>
+
+                </div>
+
+                @if (Model.OrderItems != null && Model.OrderItems.Any())
+                {
+                    <div class="order-items-section">
+
+                        <div class="items-header">
+                            <h2>Ordered Items</h2>
+                        </div>
+
+                        <div class="order-items-list">
+
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <div class="order-item-card">
+
+                                    <div class="item-left">
+
+                                        <div class="item-icon">
+                                            🍔
+                                        </div>
+
+                                        <div>
+                                            <h4>@item.Name</h4>
+
+                                            <p>
+                                                Quantity :
+                                                <strong>@item.Quantity</strong>
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="item-price">
+                                        PKR @item.Price
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

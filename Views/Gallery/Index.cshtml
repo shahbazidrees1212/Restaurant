@@ -1,4 +1,0 @@
-@model List<GalleryImage>
-@{ ViewData["Title"] = "Gallery"; }
-<section class="page-hero"><div class="container"><h1>Gallery</h1><p>Interior, food and event moments.</p></div></section>
-<section class="section-padding"><div class="container"><div class="row g-4">@foreach(var img in Model){<div class="col-md-6 col-lg-4"><div class="gallery-card"><img src="@img.ImageUrl"><div><span>@img.Category</span><h5>@img.Title</h5></div></div></div>}</div></div></section>

@@ -2,12 +2,37 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantMvcUltimatePro.Data;
 using RestaurantMvcUltimatePro.Models;
 using RestaurantMvcUltimatePro.Services.Interfaces;
+
 namespace RestaurantMvcUltimatePro.Services.Implementations;
-public class ContentService(AppDbContext db) : IContentService
+
+public class ContentService : IContentService
 {
-    public Task<List<Chef>> GetChefsAsync() => db.Chefs.ToListAsync();
-    public Task<List<Testimonial>> GetTestimonialsAsync() => db.Testimonials.ToListAsync();
-    public Task<List<Offer>> GetOffersAsync() => db.Offers.ToListAsync();
-    public Task<List<RestaurantEvent>> GetEventsAsync() => db.RestaurantEvents.OrderBy(x=>x.EventDate).ToListAsync();
-    public Task<List<GalleryImage>> GetGalleryAsync() => db.GalleryImages.ToListAsync();
+    private readonly AppDbContext db;
+
+    public ContentService(AppDbContext db)
+    {
+        this.db = db;
+    }
+
+    public async Task<List<Chef>> GetChefsAsync()
+    {
+        return await db.Chefs.ToListAsync();
+    }
+
+    public async Task<List<Testimonial>> GetTestimonialsAsync()
+    {
+        return await db.Testimonials.ToListAsync();
+    }
+
+    public async Task<List<Offer>> GetOffersAsync()
+    {
+        return await db.Offers.ToListAsync();
+    }
+
+    public async Task<List<RestaurantEvent>> GetEventsAsync()
+    {
+        return await db.RestaurantEvents
+                       .OrderBy(x => x.EventDate)
+                       .ToListAsync();
+    }
 }

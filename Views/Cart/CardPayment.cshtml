@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "Card Payment";
+}
+
+<section class="card-payment-page">
+
+    <div class="card-payment-box">
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert-box alert-error">
+                @TempData["Error"]
+            </div>
+        }
+
+        <div class="payment-header">
+            <div class="payment-icon">💳</div>
+
+            <h1>Secure Card Payment</h1>
+
+            <p>
+                Complete your payment securely using your debit or credit card.
+            </p>
+        </div>
+
+        <div class="card-payment-top">
+
+            <div>
+                <span>Total Amount</span>
+                <strong>PKR @ViewBag.Amount</strong>
+            </div>
+
+            <div>
+                <span>Accepted Cards</span>
+                <strong>Visa / Mastercard</strong>
+            </div>
+
+        </div>
+
+        <div class="card-preview">
+
+            <div class="card-chip"></div>
+
+            <div class="card-brand">
+                VISA / MasterCard
+            </div>
+
+            <div class="card-number-preview">
+                •••• •••• •••• ••••
+            </div>
+
+            <div class="card-bottom">
+                <span>CARD HOLDER</span>
+                <span>MM/YY</span>
+            </div>
+
+        </div>
+
+        <form asp-controller="Cart"
+              asp-action="ProcessCardPayment"
+              method="post"
+              class="card-form">
+
+            <input type="hidden"
+                   name="amount"
+                   value="@ViewBag.Amount" />
+
+            <div class="form-group">
+                <label>Card Holder Name</label>
+
+                <input type="text"
+                       name="cardName"
+                       placeholder="Enter card holder name"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label>Card Number</label>
+
+                <input type="text"
+                       name="cardNumber"
+                       maxlength="19"
+                       placeholder="1234 5678 9012 3456"
+                       required />
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>Expiry Date</label>
+
+                    <input type="text"
+                           name="expiry"
+                           maxlength="5"
+                           placeholder="MM/YY"
+                           required />
+                </div>
+
+                <div class="form-group">
+                    <label>CVV</label>
+
+                    <input type="password"
+                           name="cvv"
+                           maxlength="4"
+                           placeholder="123"
+                           required />
+                </div>
+
+            </div>
+
+            <button type="submit" class="pay-card-btn">
+                Pay PKR @ViewBag.Amount
+            </button>
+
+        </form>
+
+        <a asp-controller="Cart"
+           asp-action="Index"
+           class="back-cart">
+
+            ← Back to Cart
+
+        </a>
+
+    </div>
+
+</section>

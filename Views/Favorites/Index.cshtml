@@ -1,0 +1,115 @@
+﻿@model List<RestaurantMvcUltimatePro.Models.Favorite>
+
+@{
+    ViewData["Title"] = "My Favorites";
+}
+
+<section class="favorite-page">
+
+    <div class="favorite-container">
+
+        <div class="favorite-header">
+            <span>Saved Items</span>
+            <h1>My Favorites</h1>
+            <p>Your saved delicious meals are here.</p>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-favorites">
+                <div class="empty-icon">❤️</div>
+                <h2>No Favorites Yet</h2>
+                <p>You have not added any delicious meals to your favorites list.</p>
+                <a href="/Menu" class="browse-btn">Browse Menu</a>
+            </div>
+        }
+        else
+        {
+            <div class="favorite-grid">
+
+                @foreach (var item in Model)
+                {
+                    <div class="favorite-card">
+
+                        <div class="favorite-img-box">
+                            <img src="@item.ImageUrl" alt="@item.FoodName" />
+                        </div>
+
+                        <div class="favorite-content">
+
+                            <h3>@item.FoodName</h3>
+
+                            <strong class="favorite-price">
+                                PKR @item.Price
+                            </strong>
+
+                            <form action="/Cart/AddToCart"
+                                  method="post"
+                                  class="favorite-cart-form">
+
+                                <input type="hidden" name="id" value="@item.MenuItemId" />
+                                <input type="hidden" name="name" value="@item.FoodName" />
+                                <input type="hidden" name="imageUrl" value="@item.ImageUrl" />
+                                <input type="hidden" name="price" value="@item.Price" />
+
+                                <div class="favorite-actions-row">
+
+                                    <div class="quantity-box">
+                                        <button type="button" onclick="decreaseQty(this)">−</button>
+
+                                        <input type="number"
+                                               name="quantity"
+                                               value="1"
+                                               min="1"
+                                               readonly />
+
+                                        <button type="button" onclick="increaseQty(this)">+</button>
+                                    </div>
+
+                                    <button type="submit" class="favorite-cart-btn">
+                                        🛒 Add Cart
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                            <form action="/Favorites/Remove"
+                                  method="post"
+                                  class="favorite-remove-form">
+
+                                <input type="hidden" name="id" value="@item.Id" />
+
+                                <button type="submit" class="favorite-remove-btn">
+                                    Remove Favorite
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>
+
+<script>
+    function increaseQty(btn) {
+        const input = btn.parentElement.querySelector("input");
+        input.value = parseInt(input.value || "1") + 1;
+    }
+
+    function decreaseQty(btn) {
+        const input = btn.parentElement.querySelector("input");
+        const value = parseInt(input.value || "1");
+
+        if (value > 1) {
+            input.value = value - 1;
+        }
+    }
+</script>

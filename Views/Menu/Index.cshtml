@@ -76,9 +76,11 @@
         else
         {
             <div class="row g-4">
+
                 @foreach (var item in Model)
                 {
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+
                         <div class="professional-food-card dish-click"
                              data-id="@item.Id"
                              data-name="@item.Name"
@@ -88,43 +90,95 @@
                              data-price-text="PKR @item.Price"
                              data-desc="@item.Description">
 
+                            <!-- IMAGE -->
                             <div class="food-image-box">
-                                <img src="@item.ImageUrl" alt="@item.Name">
-                                <span class="category-badge">@item.Category</span>
-                                <span class="popular-badge">Popular</span>
+
+                                <img src="@item.ImageUrl"
+                                     alt="@item.Name">
+
+                                <span class="category-badge">
+                                    @item.Category
+                                </span>
+
+                                <span class="popular-badge">
+                                    Popular
+                                </span>
+
                             </div>
 
+                            <!-- BODY -->
                             <div class="food-body">
 
+                                <!-- TITLE -->
                                 <div class="food-title-row">
-                                    <h5>@item.Name</h5>
-                                    <span>PKR @item.Price</span>
+
+                                    <h5>
+                                        @item.Name
+                                    </h5>
+
+                                    <span>
+                                        PKR @item.Price
+                                    </span>
+
                                 </div>
 
+                                <!-- RATING -->
                                 <div class="food-rating">
+
                                     ★★★★★
-                                    <small>4.8 Rating</small>
+
+                                    <small>
+                                        4.8 Rating
+                                    </small>
+
                                 </div>
 
+                                <!-- DESCRIPTION -->
                                 <p class="food-desc">
                                     @item.Description
                                 </p>
 
+                                <!-- META -->
                                 <div class="food-meta">
+
                                     <span>⏱ 20-30 min</span>
+
                                     <span>🔥 Fresh</span>
+
                                     <span>🍽 Premium</span>
+
                                 </div>
 
-                                <form action="/Cart/AddToCart" method="post" class="cart-form">
-                                    <input type="hidden" name="id" value="@item.Id" />
-                                    <input type="hidden" name="name" value="@item.Name" />
-                                    <input type="hidden" name="imageUrl" value="@item.ImageUrl" />
-                                    <input type="hidden" name="price" value="@item.Price" />
+                                <!-- CART FORM -->
+                                <form action="/Cart/AddToCart"
+                                      method="post"
+                                      class="cart-form">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@item.Id" />
+
+                                    <input type="hidden"
+                                           name="name"
+                                           value="@item.Name" />
+
+                                    <input type="hidden"
+                                           name="imageUrl"
+                                           value="@item.ImageUrl" />
+
+                                    <input type="hidden"
+                                           name="price"
+                                           value="@item.Price" />
 
                                     <div class="cart-control-row">
+
+                                        <!-- QUANTITY -->
                                         <div class="quantity-box">
-                                            <button type="button" onclick="decreaseQty(this)">−</button>
+
+                                            <button type="button"
+                                                    onclick="decreaseQty(this)">
+                                                −
+                                            </button>
 
                                             <input type="number"
                                                    name="quantity"
@@ -132,20 +186,60 @@
                                                    min="1"
                                                    readonly />
 
-                                            <button type="button" onclick="increaseQty(this)">+</button>
+                                            <button type="button"
+                                                    onclick="increaseQty(this)">
+                                                +
+                                            </button>
+
                                         </div>
 
-                                        <button type="submit" class="add-cart-btn">
+                                        <!-- ADD CART -->
+                                        <button type="submit"
+                                                class="add-cart-btn">
+
                                             <span>🛒</span>
+
                                             Add to Cart
+
                                         </button>
+
                                     </div>
+
+                                </form>
+
+                                <!-- FAVORITE FORM -->
+                                <form action="/Favorites/Add"
+                                      method="post"
+                                      class="favorite-form">
+
+                                    <input type="hidden"
+                                           name="foodName"
+                                           value="@item.Name" />
+
+                                    <input type="hidden"
+                                           name="price"
+                                           value="@item.Price" />
+
+                                    <input type="hidden"
+                                           name="imageUrl"
+                                           value="@item.ImageUrl" />
+
+                                    <button type="submit"
+                                            class="favorite-add-btn">
+
+                                        ❤️ Add Favorite
+
+                                    </button>
+
                                 </form>
 
                             </div>
+
                         </div>
+
                     </div>
                 }
+
             </div>
         }
 

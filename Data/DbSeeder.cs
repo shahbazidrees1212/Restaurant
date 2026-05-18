@@ -35,12 +35,7 @@ public static class DbSeeder
             new RestaurantEvent{Title="Birthday Celebration", Description="Decor, custom menu and private table setup.", EventDate=DateTime.Today.AddDays(10), StartingPrice=12000, ImageUrl="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=900&q=80"},
             new RestaurantEvent{Title="Corporate Dinner", Description="Professional setup for company dinners and meetings.", EventDate=DateTime.Today.AddDays(18), StartingPrice=25000, ImageUrl="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=900&q=80"}
         );
-        if (!db.GalleryImages.Any()) db.GalleryImages.AddRange(
-            new GalleryImage{Title="Fine Dining", Category="Interior", ImageUrl="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80"},
-            new GalleryImage{Title="Chef Plate", Category="Food", ImageUrl="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80"},
-            new GalleryImage{Title="Private Event", Category="Events", ImageUrl="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=900&q=80"},
-            new GalleryImage{Title="Dessert Bar", Category="Food", ImageUrl="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=900&q=80"}
-        );
+       
         db.SaveChanges();
     }
 }

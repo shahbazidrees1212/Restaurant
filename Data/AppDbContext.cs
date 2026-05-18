@@ -6,6 +6,7 @@ namespace RestaurantMvcUltimatePro.Data;
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<MenuItem> MenuItems => Set<MenuItem>();
     public DbSet<Reservation> Reservations => Set<Reservation>();
     public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
@@ -13,5 +14,10 @@ public class AppDbContext : DbContext
     public DbSet<Testimonial> Testimonials => Set<Testimonial>();
     public DbSet<RestaurantEvent> RestaurantEvents => Set<RestaurantEvent>();
     public DbSet<Offer> Offers => Set<Offer>();
-    public DbSet<GalleryImage> GalleryImages => Set<GalleryImage>();
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<Favorite> Favorites { get; set; }
+
+    public DbSet<NotificationModel> Notifications { get; set; }
 }

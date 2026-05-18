@@ -7,7 +7,7 @@ namespace RestaurantMvcUltimatePro.Controllers;
 public class HomeController(IMenuService menu, IContentService content, IContactService contact) : Controller
 {
     public async Task<IActionResult> Index() => View(new HomeViewModel{
-        PopularItems = await menu.GetPopularAsync(), Chefs = await content.GetChefsAsync(), Testimonials = await content.GetTestimonialsAsync(), Offers = await content.GetOffersAsync(), Events = await content.GetEventsAsync(), Gallery = await content.GetGalleryAsync()
+        PopularItems = await menu.GetPopularAsync(), Chefs = await content.GetChefsAsync(), Testimonials = await content.GetTestimonialsAsync(), Offers = await content.GetOffersAsync(), Events = await content.GetEventsAsync(), 
     });
     public IActionResult About() => View();
     [HttpGet] public IActionResult Contact() => View(new ContactMessage());

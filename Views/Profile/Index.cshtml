@@ -1,0 +1,284 @@
+﻿@model List<Reservation>
+
+@{
+    ViewData["Title"] = "My Profile";
+
+    var totalReservations = Model?.Count() ?? 0;
+    var favoriteDishes = 8;
+    var loyaltyPoints = totalReservations * 100;
+    var upcomingReservations = Model?.Count(r => r.ReservationDate >= DateTime.Today) ?? 0;
+    var profileImage = ViewBag.ProfileImage as string;
+}
+
+<section class="profile-page">
+
+    <div class="profile-bg-shape shape-1"></div>
+    <div class="profile-bg-shape shape-2"></div>
+
+    <div class="container">
+
+        <div class="profile-header">
+            <div>
+                <span class="profile-tag">Welcome Back</span>
+                <h1>My Profile</h1>
+                <p>
+                    Manage your reservations, favorite dishes,
+                    loyalty rewards and dining experiences.
+                </p>
+            </div>
+
+            <div class="profile-actions">
+                <a asp-controller="Profile"
+                   asp-action="EditProfile"
+                   class="edit-profile-btn">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- LEFT SIDEBAR -->
+            <div class="col-lg-4">
+
+                <div class="profile-card user-card text-center">
+
+                    <div class="profile-cover"></div>
+
+                    <div class="profile-avatar-wrapper">
+
+                        <img src="@(string.IsNullOrEmpty(profileImage)
+                                           ? Url.Content("~/images/default-user.jpg")
+                                           : Url.Content(profileImage))"
+                             alt="Profile Image"
+                             class="profile-avatar-img"
+                             id="profilePreviewImage" />
+                        <span class="online-status"></span>
+                    </div>
+
+                    <h3>@User.Identity?.Name</h3>
+
+                    <p class="member-text">
+                        Premium Restaurant Member
+                    </p>
+
+                    <div class="profile-badge">
+                        <i class="bi bi-patch-check-fill"></i>
+                        Gold Member
+                    </div>
+
+                    <div class="profile-socials">
+                        <a href="#" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+
+                        <a href="#" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+
+                        <a href="#" aria-label="Twitter">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- QUICK LINKS -->
+                <div class="profile-card quick-links-card mt-4">
+
+                    <div class="section-title-wrap mb-3">
+                        <h5>Quick Access</h5>
+                    </div>
+
+                    <a asp-controller="Reservation"
+                       asp-action="MyReservations"
+                       class="quick-link">
+                        <div class="quick-link-left">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>My Reservations</span>
+                        </div>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a asp-controller="Reservation"
+                       asp-action="Create"
+                       class="quick-link">
+                        <div class="quick-link-left">
+                            <i class="bi bi-plus-circle"></i>
+                            <span>Book Table</span>
+                        </div>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a href="/Favorites" class="quick-link">
+                        <div class="quick-link-left">
+                            <i class="bi bi-heart"></i>
+                            <span>Favorite Dishes</span>
+                        </div>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a href="/Notifications" class="quick-link">
+
+                        <div class="quick-link-left">
+                            <i class="bi bi-bell"></i>
+                            <span>Notifications</span>
+                        </div>
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT CONTENT -->
+            <div class="col-lg-8">
+
+                <!-- ACCOUNT OVERVIEW -->
+                <div class="profile-card">
+
+                    <div class="section-title-wrap">
+                        <h4>Account Overview</h4>
+                    </div>
+
+                    <div class="profile-info">
+
+                        <div class="info-box">
+                            <div class="info-icon reservations">
+                                <i class="bi bi-calendar2-check"></i>
+                            </div>
+
+                            <div class="info-content">
+                                <span>Total Reservations</span>
+                                <strong>@totalReservations</strong>
+                                <small>All Time Bookings</small>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-icon upcoming">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+
+                            <div class="info-content">
+                                <span>Upcoming Bookings</span>
+                                <strong>@upcomingReservations</strong>
+                                <small>Scheduled Reservations</small>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-icon favorites">
+                                <i class="bi bi-heart-fill"></i>
+                            </div>
+
+                            <div class="info-content">
+                                <span>Favorite Dishes</span>
+                                <strong>@favoriteDishes</strong>
+                                <small>Saved Menu Items</small>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-icon loyalty">
+                                <i class="bi bi-stars"></i>
+                            </div>
+
+                            <div class="info-content">
+                                <span>Loyalty Points</span>
+                                <strong>@loyaltyPoints</strong>
+                                <small>Reward Balance</small>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- RECENT RESERVATIONS -->
+                <div class="profile-card mt-4">
+
+                    <div class="section-title-wrap">
+                        <h4>Recent Reservations</h4>
+
+                        <a asp-controller="Reservation"
+                           asp-action="MyReservations">
+                            View All
+                        </a>
+                    </div>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var reservation in Model)
+                        {
+                            <div class="reservation-item">
+
+                                <div class="reservation-left">
+
+                                    <div class="reservation-icon">
+                                        <i class="bi bi-calendar-event"></i>
+                                    </div>
+
+                                    <div>
+                                        <h6>@reservation.FullName</h6>
+
+                                        <p>
+                                            @reservation.ReservationDate.ToString("dd MMM yyyy")
+                                            •
+                                            @reservation.ReservationTime
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                                <span class="status confirmed">
+                                    Confirmed
+                                </span>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="empty-reservation">
+
+                            <i class="bi bi-calendar-x"></i>
+
+                            <h5>No Reservations Yet</h5>
+
+                            <p>You have not booked any tables yet.</p>
+
+                            <a asp-controller="Reservation"
+                               asp-action="Create"
+                               class="book-now-btn">
+                                Book Table
+                            </a>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+    const profileUpload = document.getElementById('profileUpload');
+    const profilePreviewImage = document.getElementById('profilePreviewImage');
+
+    if (profileUpload && profilePreviewImage) {
+        profileUpload.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+
+            if (file) {
+                profilePreviewImage.src = URL.createObjectURL(file);
+            }
+        });
+    }
+</script>

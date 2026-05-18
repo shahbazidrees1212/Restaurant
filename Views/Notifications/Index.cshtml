@@ -1,0 +1,52 @@
+﻿@model List<RestaurantMvcUltimatePro.Models.NotificationModel>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<section class="notification-page">
+
+    <div class="notification-container">
+
+        <div class="notification-header">
+            <span>Latest Updates</span>
+            <h1>Notifications</h1>
+            <p>Your latest booking and order updates.</p>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-notification">
+                <div class="empty-icon">🔔</div>
+                <h2>No Notifications Yet</h2>
+                <p>You do not have any booking or order updates right now.</p>
+            </div>
+        }
+        else
+        {
+            <div class="notification-list">
+                @foreach (var item in Model)
+                {
+                    <div class="notification-card">
+
+                        <div class="notification-icon">
+                            🔔
+                        </div>
+
+                        <div class="notification-content">
+                            <h3>@item.Title</h3>
+                            <p>@item.Message</p>
+
+                            <small>
+                                @item.CreatedAt.ToString("dd MMM yyyy hh:mm tt")
+                            </small>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+
+</section>

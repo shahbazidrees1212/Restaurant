@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "JazzCash Payment";
-    string jazzCashUrl = "https://sandbox.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/";
 }
 
 <section class="payment-page">
@@ -10,10 +9,13 @@
         <h1>Redirecting to JazzCash...</h1>
         <p>Please wait. You are being redirected to JazzCash secure payment gateway.</p>
 
-        <form id="jazzCashForm" method="post" action="@jazzCashUrl">
+        <form id="jazzCashForm" method="post" action="@Model["gatewayUrl"]">
             @foreach (var item in Model)
             {
-                <input type="hidden" name="@item.Key" value="@item.Value" />
+                if (item.Key != "gatewayUrl")
+                {
+                    <input type="hidden" name="@item.Key" value="@item.Value" />
+                }
             }
 
             <button type="submit" class="pay-btn">

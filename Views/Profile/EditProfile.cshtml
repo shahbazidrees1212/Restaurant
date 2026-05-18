@@ -1,0 +1,150 @@
+﻿@model AppUser
+
+@{
+    ViewData["Title"] = "Edit Profile";
+    var profileImage = ViewBag.ProfileImage as string;
+}
+
+<section class="edit-profile-page">
+
+    <div class="profile-bg-shape shape-1"></div>
+    <div class="profile-bg-shape shape-2"></div>
+
+    <div class="container">
+
+        <div class="edit-profile-header">
+
+            <a asp-controller="Profile"
+               asp-action="Index"
+               class="back-profile-btn">
+                <i class="bi bi-arrow-left"></i>
+                Back to Profile
+            </a>
+
+            <h1>Edit Profile</h1>
+
+            <p>
+                Update your personal information and profile picture.
+            </p>
+
+        </div>
+
+        <div class="edit-profile-card">
+
+            <form asp-controller="Profile"
+                  asp-action="EditProfile"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="edit-avatar-box">
+
+                    <div class="profile-avatar-wrapper edit-avatar">
+
+                        <img src="@(string.IsNullOrEmpty(profileImage)
+                                                                ? Url.Content("~/images/default-user.jpg")
+                                                                : Url.Content(profileImage))"
+                             alt="Profile Image"
+                             class="profile-avatar-img"
+                             id="previewProfileImage" />
+
+                        <label for="ProfileImage" class="camera-upload-btn">
+                            <i class="bi bi-camera-fill"></i>
+                        </label>
+
+                        <input type="file"
+                               id="ProfileImage"
+                               name="ProfileImage"
+                               accept="image/*"
+                               hidden />
+
+                    </div>
+
+                    <h4>Profile Picture</h4>
+                    <p>Upload a clear photo for your restaurant profile.</p>
+
+                </div>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Full Name</label>
+                        <input type="text"
+                               name="FullName"
+                               class="form-control profile-input"
+                               value="@Model?.FullName"
+                               placeholder="Enter your full name" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Email Address</label>
+                        <input type="email"
+                               name="Email"
+                               class="form-control profile-input"
+                               value="@Model?.Email"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text"
+                               name="PhoneNumber"
+                               class="form-control profile-input"
+                               value="@Model?.PhoneNumber"
+                               placeholder="Enter your phone number" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Member Type</label>
+                        <input type="text"
+                               class="form-control profile-input"
+                               value="Gold Member"
+                               readonly />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Address</label>
+                        <textarea name="Address"
+                                  rows="4"
+                                  class="form-control profile-input"
+                                  placeholder="Enter your address">@Model?.Address</textarea>
+                    </div>
+
+                </div>
+
+                <div class="edit-profile-actions">
+
+                    <a asp-controller="Profile"
+                       asp-action="Index"
+                       class="cancel-profile-btn">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="save-profile-btn">
+                        <i class="bi bi-check-circle"></i>
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+    const profileImageInput = document.getElementById('ProfileImage');
+    const previewProfileImage = document.getElementById('previewProfileImage');
+
+    if (profileImageInput && previewProfileImage) {
+        profileImageInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+
+            if (file) {
+                previewProfileImage.src = URL.createObjectURL(file);
+            }
+        });
+    }
+</script>

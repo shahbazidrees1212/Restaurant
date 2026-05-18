@@ -1,0 +1,116 @@
+﻿@model List<RestaurantMvcUltimatePro.Models.Order>
+
+@{
+    ViewData["Title"] = "Order History";
+}
+
+<section class="order-history-page">
+    <div class="order-container">
+
+        <div class="order-header">
+            <div>
+                <span class="order-label">My Orders</span>
+                <h1>Order History</h1>
+                <p>Track your placed orders, customer details, payment status, and food items.</p>
+            </div>
+
+            <a asp-controller="Menu" asp-action="Index" class="continue-btn">
+                + Order More Food
+            </a>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-order-box">
+                <div class="empty-icon">🛍️</div>
+                <h2>No Orders Found</h2>
+                <p>You have not placed any order yet. Start ordering your favorite meals now.</p>
+
+                <a asp-controller="Menu" asp-action="Index" class="explore-btn">
+                    Explore Menu
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="order-grid">
+                @foreach (var order in Model)
+                {
+                    <article class="order-card">
+
+                        <div class="order-card-header">
+                            <div>
+                                <span class="order-id">Order #@order.Id</span>
+                                <h3>@order.CustomerName</h3>
+                                <p>@order.OrderDate.ToString("dd MMM yyyy • hh:mm tt")</p>
+                            </div>
+
+                            <span class="status-badge">
+                                @order.Status
+                            </span>
+                        </div>
+
+                        <div class="order-info-grid">
+                            <div class="info-box">
+                                <span>Email</span>
+                                <strong>@order.CustomerEmail</strong>
+                            </div>
+
+                            <div class="info-box">
+                                <span>Phone</span>
+                                <strong>@order.Phone</strong>
+                            </div>
+
+                            <div class="info-box total-box">
+                                <span>Total</span>
+                                <strong>Rs. @order.TotalAmount</strong>
+                            </div>
+                        </div>
+
+                        <div class="items-section">
+                            <div class="items-title">
+                                <span>Food Items</span>
+                                <small>@order.OrderItems.Count item(s)</small>
+                            </div>
+
+                            @foreach (var item in order.OrderItems.Take(3))
+                            {
+                                <div class="food-item">
+                                    <img src="@item.ImageUrl" alt="@item.Name" />
+
+                                    <div>
+                                        <h4>@item.Name</h4>
+                                        <p>Qty: @item.Quantity</p>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (order.OrderItems.Count > 3)
+                            {
+                                <div class="more-items">
+                                    + @(order.OrderItems.Count - 3) more item(s)
+                                </div>
+                            }
+                        </div>
+
+                        <div class="address-box">
+                            <span>Delivery Address</span>
+                            <p>@order.Address</p>
+                        </div>
+
+                        <div class="order-actions">
+                            <a asp-controller="Order"
+                               asp-action="Details"
+                               asp-route-id="@order.Id"
+                               class="details-btn">
+                                View Details
+                            </a>
+                        </div>
+
+                    </article>
+                }
+            </div>
+        }
+
+    </div>
+</section>
